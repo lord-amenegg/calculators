@@ -75,7 +75,7 @@ def mech_valve_enox():
 
 #enter anticoagulant type and indication
 medicine = input("enter anticoagulant, (w, warfarin, d, DOAC): ")
-indication = input("Enter indication for anticoagulation, (a, AF, v, VTE, m, mechanical valve): ")
+indication = input("Enter indication for anticoagulation, (AF (a), VTE (v), mechanical valve (m): ")
 a = input("Enter age: ")
 w = input("Enter weight in kg: ")
 c = input("Enter Serum Creatinine: ")
@@ -100,10 +100,15 @@ else:
 #calculates risk and bridging dose if on warfarin
 if medicine == "w" and indication == "a":
     option = input("TIA or stroke within less than 12 months?, (y, n): ")
-    if option == "n" :
-        enoxaparin()
-    else:
-        enox_medium_risk()
+
+    try:
+        if option == "n" :
+            enoxaparin()
+        if option == "y" :
+            enox_medium_risk()
+    except:
+        print("please enter a valid numeric value")
+        quit()
 if medicine == "w" and indication == "m":
     mech_valve_enox()
 if medicine == "w" and indication == "v":
