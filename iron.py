@@ -1,4 +1,8 @@
 def ganzoni():
+    if actual_hb >= 120:
+        dose = 500
+        print("Parenteral Iron dose", dose,"mg")
+        quit()
     if bmi > 30 and s == "m":
         peso = 50 + 0.91 * (altura - 152)
         dose = ((120 - actual_hb) * peso * 0.24) + 500
