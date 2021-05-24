@@ -3,6 +3,85 @@ from tkinter import ttk
 from tkinter import *
 from tkinter.messagebox import *
 
+def inf_doseband():
+
+
+    w3 = ([33, 37], [38, 45], [46, 54], [55, 62], [63, 74], [75, 79], [80, 90], [91, 95], [96, 111], [112, 125], [126, 147], [148, 159], [160, 185])
+    db3 = [100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 400, 450, 500]
+    w5 = ([40, 44], [45, 47], [48, 52], [53, 57], [58, 66], [67, 75], [76, 88], [89, 95], [66, 109], [110, 115], [116, 133], [134, 155], [156, 177])
+    db5 = [200, 225, 250, 275, 300, 350, 400, 450, 500, 550, 600, 700, 800]
+    w10 = ([40, 44], [45, 47], [48, 54], [55, 57], [58, 66], [67, 77], [78, 88], [89, 99], [100, 110], [111, 115], [116, 125], [126, 135], [136, 145], [146, 155], [156, 160])
+    db10 = [400, 450, 500, 550, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600]
+
+    def dose_band():
+        weight = weight_entry.get()
+        weight = int(weight)
+        dose = "n/a"
+        peso = int(var.get())
+        if peso == 3:
+            for index, bracket in enumerate(w3):
+                if bracket[0] <= weight <= bracket[1]:
+                    dose = db3[index]
+                    inf_dose_entry.delete(0, tk.END)
+                    inf_dose_entry.insert(0, dose)
+                    inf_dose_entry.insert(tk.END, "mg")
+
+        if peso == 5:
+            for index, bracket in enumerate(w5):
+                if bracket[0] <= weight <= bracket[1]:
+                    dose = db5[index]
+                    inf_dose_entry.delete(0, tk.END)
+                    inf_dose_entry.insert(0, dose)
+                    inf_dose_entry.insert(tk.END, "mg")
+        if peso == 10:
+            for index, bracket in enumerate(w10):
+                if bracket[0] <= weight <= bracket[1]:
+                    dose = db10[index]
+                    inf_dose_entry.delete(0, tk.END)
+                    inf_dose_entry.insert(0, dose)
+                    inf_dose_entry.insert(tk.END, "mg")
+
+
+    #sets window
+    window = Tk()
+    window.title("Dose Banded Infliximab Calculator")
+
+    #sets Frames
+    content = ttk.Frame(window, borderwidth = 5, relief = "ridge", padding =(3, 3, 12, 12))
+    content.grid(column = 0, row = 0, sticky = (N, S, E, W))
+    results = ttk.Frame(window, borderwidth = 5, relief = "ridge")
+    results.grid(column=0, row=1, sticky= (N, S, E, W))
+    weight = ttk.Label(content, text = "Weight in kg?    ", font = ('Arial', 15, 'bold')).grid(column = 0, row = 20,sticky = (N, W), padx = 5, pady = 5)
+    weight_entry = tk.StringVar()
+    weight_entry = ttk.Entry(content, font = ('Arial', 15), width = 10)
+    weight_entry.grid(column = 2, row = 20, sticky = (N, S, E, W), padx = 5, pady = 5)
+    var = tk.StringVar()
+    inf_3mgkg = Radiobutton(content, text='3mg/kg', font = ('Arial', 15, 'bold'), variable=var, value='3')
+    inf_3mgkg.grid(column = 0, row = 25, sticky = (N, S, E, W))
+    inf_5mgkg = Radiobutton(content, text='5mg/kg', font = ('Arial', 15, 'bold'), variable=var, value='5')
+    inf_5mgkg.grid(column =1, row  = 25, sticky = (N, S, E, W))
+    inf_10mgkg = Radiobutton(content, text='10mg/kg', font = ('Arial', 15, 'bold'), variable=var, value='10')
+    inf_10mgkg.grid(column = 2, row = 25, sticky = (N, S, E, W))
+    inf_dose = tk.Button(results, text = "Infliximab dose", font = ('Arial', 15, 'bold'), command = dose_band).grid(column = 0, row = 20,sticky = (N, W), padx = 5, pady = 5)
+    inf_dose_entry = ttk.Entry(results, font = ('Arial', 15), width = 10)
+    inf_dose_entry.grid(column = 2, row = 20, sticky = (N, S, E, W), padx = 5, pady = 5)
+
+    window.columnconfigure(0, weight = 3)
+    window.columnconfigure(1, weight = 3)
+    content.columnconfigure(0, weight = 3)
+    content.columnconfigure(1, weight = 3)
+    content.columnconfigure(2, weight = 3)
+    results.columnconfigure(0, weight = 3)
+    results.columnconfigure(1, weight = 3)
+    results.columnconfigure(2, weight = 3)
+
+
+
+
+
+
+    window.mainloop()
+
 def gent():
     fields = [ 'Age', 'Height', 'Weight', 'Serum Creatinine', 'Creatinine Clearance', 'Gentamicin dose', 'Dose interval (hours)']
     def gent_dose(entries):
@@ -388,11 +467,12 @@ ttk.Label(content, text = 'Select Calculator :', font = ('Arial', 15, 'bold')).g
 
 C_G_button = Button(content, text = "Cockroft and Gault", font = ('Arial', 15, 'bold'), command = cg, width = 20)
 C_G_button.grid(column = 0, row = 30, sticky = (N, W), padx = 5, pady = 5)
-
 Calculate_Iron_dose_button = Button(content, text = "Parenteral Iron", font = ('Arial', 15, 'bold'), command = irongui, width = 20)
 Calculate_Iron_dose_button.grid(column = 0, row = 35, sticky = (N, W), padx = 5, pady = 5)
 Calculate_Gent_dose_button = Button(content, text = "Gentamicin", font = ('Arial', 15, 'bold'), command = gent, width = 20)
 Calculate_Gent_dose_button.grid(column = 0, row = 40, sticky = (N, W), padx = 5, pady = 5)
+Inf_db_button = Button(content, text = "Infliximab dose", font = ('Arial', 15, 'bold'), command = inf_doseband, width = 20)
+Inf_db_button.grid(column = 0, row = 45, sticky = (N, W), padx = 5, pady = 5)
 btn = Button(window, text = "Exit", font = ('Arial', 10, 'bold'), command = window.destroy).grid(column = 0, row = 35, sticky = (N, W), padx = 5, pady = 5)
 
 window.mainloop()
