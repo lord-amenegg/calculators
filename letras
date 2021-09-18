@@ -21,7 +21,7 @@ def get_lyrics():
     artista = now_playing['item']['artists'][0]['name']
     name_song = now_playing['item']['name']
     print(artista, name_song)
-    genius = lg.Genius('h2QlG7t_Xqz3U_719d0ak7ctJ_UXhejiQ1JhZPicysQwm_eC16nO0JSKWIx_ntXE')
+    genius = lg.Genius('')
     letras1 = genius.search_artist(artista, max_songs =0, sort = 'title')
     if (name_song.find('-') != -1):
         name_song1 = name_song[:(name_song.find('-')-1)]
