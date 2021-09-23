@@ -1,41 +1,50 @@
 import spotipy
-import requests
 from spotipy.oauth2 import SpotifyClientCredentials
 from spotipy.oauth2 import SpotifyOAuth
 import lyricsgenius as lg
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+import time
 
 
-SPOTIPY_CLIENT_ID = 
-SPOTIPY_CLIENT_SECRET = 
+SPOTIPY_CLIENT_ID = "52632643f8e8482b852207563723c096"
+SPOTIPY_CLIENT_SECRET = "811c1c082df44765a111dfae4b32d77d"
 SPOTIPY_REDIRECT_URI = 'http://127.0.0.1/callback'
 SCOPE = 'user-read-currently-playing'
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET, redirect_uri=SPOTIPY_REDIRECT_URI, scope=SCOPE))
-
 
 
 def get_lyrics():
     now_playing = sp.current_user_playing_track()
     artista = now_playing['item']['artists'][0]['name']
     name_song = now_playing['item']['name']
-    print(artista, name_song)
-    genius = lg.Genius('')
-    letras1 = genius.search_artist(artista, max_songs =0, sort = 'title')
+    length = now_playing['item']['duration_ms']
+    progress = now_playing['progress_ms']
+    print(artista, name_song, length)
+    genius = lg.Genius('h2QlG7t_Xqz3U_719d0ak7ctJ_UXhejiQ1JhZPicysQwm_eC16nO0JSKWIx_ntXE')
     if (name_song.find('-') != -1):
         name_song1 = name_song[:(name_song.find('-')-1)]
-        letras2 = letras1.song(name_song1)
-        letras3 = letras2.lyrics
-        letras_box.delete('1.0', END)
-        letras_box.insert('1.0', letras3)
+        try:
+            letras2 = genius.search_song(name_song1, artista)
+            letras3 = letras2.lyrics
+            letras_box.delete('1.0', END)
+            letras_box.insert('1.0', letras3)
+        except Exception:
+            letras_box.delete('1.0', END)
+            letras_box.insert('1.0', 'INSTRUMENTAL')
+
     else:
-        letras2 = letras1.song(name_song)
-        letras3 = letras2.lyrics
-        letras_box.delete('1.0', END)
-        letras_box.insert('1.0', letras3)
-#letras2 = genius.search_song(name_song, artista.name)
-#print(letras2.lyrics)
+        try:
+            letras2 = genius.search_song(name_song, artista)
+            letras3 = letras2.lyrics
+            letras_box.delete('1.0', END)
+            letras_box.insert('1.0', letras3)
+        except Exception:
+            letras_box.delete('1.0', END)
+            letras_box.insert('1.0', 'INSTRUMENTAL')
+
+    window.after((length - progress), get_lyrics)
 
 window = Tk()
 window.title('Song lyrics')
@@ -44,8 +53,9 @@ ttk.Style().configure('TButton', font = ('Helvetica', 20, 'bold'))
 content = tk.Frame(window, bg = 'gray1', borderwidth = 5, relief = 'ridge')
 content.grid(column = 0, row = 1, sticky = (N, S, E, W))
 scraper = ttk.Button(content, text = 'Lyrics', command = get_lyrics).grid(column = 0, row = 0, sticky = 'nw')
-letras_box = results_box = tk.Text(content, font = ('Ubuntu', 20, 'bold'), width = 50, height = 40, fg = 'snow', bg = 'gray1')
+letras_box = results_box = tk.Text(content, font = ('Ubuntu', 25), width = 40, height = 35, fg = 'snow', bg = 'gray1')
 letras_box.config(wrap = WORD)
 letras_box.grid(column = 0, row = 1, sticky = 'nswe', columnspan = 2)
+get_lyrics()
 
 window.mainloop()
