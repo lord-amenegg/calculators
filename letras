@@ -8,8 +8,8 @@ from tkinter import *
 import time
 
 
-SPOTIPY_CLIENT_ID = "52632643f8e8482b852207563723c096"
-SPOTIPY_CLIENT_SECRET = "811c1c082df44765a111dfae4b32d77d"
+SPOTIPY_CLIENT_ID = ""
+SPOTIPY_CLIENT_SECRET = ""
 SPOTIPY_REDIRECT_URI = 'http://127.0.0.1/callback'
 SCOPE = 'user-read-currently-playing'
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET, redirect_uri=SPOTIPY_REDIRECT_URI, scope=SCOPE))
@@ -22,7 +22,7 @@ def get_lyrics():
     length = now_playing['item']['duration_ms']
     progress = now_playing['progress_ms']
     print(artista, name_song, length)
-    genius = lg.Genius('h2QlG7t_Xqz3U_719d0ak7ctJ_UXhejiQ1JhZPicysQwm_eC16nO0JSKWIx_ntXE')
+    genius = lg.Genius('')
     if (name_song.find('-') != -1):
         name_song1 = name_song[:(name_song.find('-')-1)]
         try:
