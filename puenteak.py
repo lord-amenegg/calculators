@@ -60,7 +60,7 @@ def proph_dose():
     GFR_entry = tk.Entry(pdose, font = ('', 20, 'bold'))
     enox_dose_entry = tk.Text(pdose, font = ('', 15), width = 30, height = 2)
     GFR_lbl.grid(row = 0, column = 0)
-    GFR_entry.grid(row = 1,  column = 0)
+    GFR_entry.grid(row = 0,  column = 1)
     enox_dose_entry.config(wrap = WORD, font = ('', 20, 'bold'))
     enox_dose_entry.grid(row = 3, column = 0, columnspan = 2)
     s = n.get()
@@ -180,13 +180,15 @@ def bridging_dose():
             if vtevar.get() == 'VTE 3-12 months or  \n multiple, large volume PE or \n active cancer':
                 enox_medium_risk()
             if vtevar.get() == 'VTE < 3 months \n or known antithrombin deficiency or \n antiphospholipid syndrome':
-                enox_high_risk()
+                mech_valve_enox()
 
     if medicine == "DOAC" and indication == "AF" :
             if afvar.get() == "No" :
-                    enoxaparin()
+                enoxaparin()
             if afvar.get() == "Yes" :
-                    enox_medium_risk()
+                enox_medium_risk()
+            if afvar.get() == "Yes3" :
+                mech_valve_enox()
 
     if medicine == "DOAC" and indication == "MECH" :
             enox_dose_entry.delete('1.0', END)
@@ -210,6 +212,7 @@ def open_indication_window():
     tk.Radiobutton(indic_window, text = "Mechanical Heart Valve", font = ('', 20, 'bold'), indicatoron = 0, variable = indication_var, value = 'MECH', command = open_mech_window, bg = 'navajo white').grid(row = 15, column = 0, padx = 5, pady = 5, sticky = (N, S, E, W))
 
 
+
 #atrial fibrillation window
 def open_afib_window():
     global afvar
@@ -217,14 +220,16 @@ def open_afib_window():
     global vtevar
     afib = Toplevel(window)
     afib.title("Atrial Fibrillation")
-    afib_lbl = tk.Label(afib, text = 'TIA or stroke within the \n past 12 months?', font = ('', 20, 'bold')).grid(column = 0, row = 0)
+    afib_lbl = tk.Label(afib, text = 'Recent TIA or stroke?', font = ('', 20, 'bold')).grid(column = 0, row = 0)
     afvar = tk.StringVar()
-    tk.Radiobutton(afib, text = "Yes", font = ('', 20, 'bold'), indicatoron = 0, variable = afvar, value = 'Yes', bg = 'navajo white').grid(row = 1, column = 0, sticky = (N, S, E, W))
-    tk.Radiobutton(afib, text = "No", font = ('', 20, 'bold'), indicatoron = 0,  variable = afvar, value = 'No', bg = 'navajo white').grid(row = 2, column = 0, sticky = (N, S, E, W))
-    enox_dose = tk.Button(afib, text = "Enoxaparin dose", font = ('', 20, 'bold'), command = bridging_dose, bg = 'navajo white').grid(column = 0, row = 3, sticky = (N, S), padx = 5, pady = 5)
+    tk.Radiobutton(afib, text = "Yes, within the past 3 months", font = ('', 20, 'bold'), indicatoron = 0, variable = afvar, value = 'Yes3', bg = 'navajo white').grid(row = 1, column = 0, sticky = (N, S, E, W))
+    tk.Radiobutton(afib, text = "Yes, within the past 12 months", font = ('', 20, 'bold'), indicatoron = 0, variable = afvar, value = 'Yes', bg = 'navajo white').grid(row = 2, column = 0, sticky = (N, S, E, W))
+    tk.Radiobutton(afib, text = "No", font = ('', 20, 'bold'), indicatoron = 0,  variable = afvar, value = 'No', bg = 'navajo white').grid(row = 3, column = 0, sticky = (N, S, E, W))
+    enox_dose = tk.Button(afib, text = "Enoxaparin dose", font = ('', 20, 'bold'), command = bridging_dose, bg = 'navajo white').grid(column = 0, row = 6, sticky = (N, S), padx = 5, pady = 5)
     enox_dose_entry = tk.Text(afib, font = ('', 15), width = 30, height = 4)
     enox_dose_entry.config(wrap = WORD, font = ('', 20, 'bold'))
-    enox_dose_entry.grid(column = 0, row = 5, sticky = (N, S, E, W), padx = 5, pady = 5)
+    enox_dose_entry.grid(column = 0, row = 7, sticky = (N, S, E, W), padx = 5, pady = 5)
+
 
 #vte window
 def open_vte_window():
