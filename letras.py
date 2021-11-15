@@ -25,7 +25,7 @@ def get_lyrics():
         print(artista, name_song, length, progress)
         info = ttk.Label(content, text = (artista  + ' - ' + name_song), font = ('Ubuntu', 20, 'bold'))
         info.grid(column = 0, row = 0, sticky = 'we')
-        genius = lg.Genius('') '#insert your genius id here
+        genius = lg.Genius('') #insert your genius id here
         if (name_song.find('-') != -1):
             name_song1 = name_song[:(name_song.find('- ')-1)]
             try:
@@ -65,7 +65,7 @@ def get_lyrics():
         print(artist, name_song, length, progress)
         info = ttk.Label(content, text = (artist + ' - ' + name_song), font = ('Ubuntu', 20, 'bold'))
         info.grid(column = 0, row = 0, sticky = 'we')
-        genius = lg.Genius('h2QlG7t_Xqz3U_719d0ak7ctJ_UXhejiQ1JhZPicysQwm_eC16nO0JSKWIx_ntXE')
+        genius = lg.Genius('')#insert your genius id here
         if (name_song.find('-') != -1):
             name_song1 = name_song[:(name_song.find('- ')-1)]
             try:
