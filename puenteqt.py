@@ -1,8 +1,4 @@
 import sys
-import time
-import urllib
-import urllib.request
-
 from PyQt6.QtCore import QDateTime, Qt, QTimer
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QComboBox, QDial, QDialog,
