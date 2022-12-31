@@ -1,10 +1,12 @@
-"""Simple Hello, World example with PyQt6."""
+
 
 import sys
 import urllib.request
 import urllib
 import pychromecast
+#use this if you own a Denon AVR
 import denonavr
+
 import asyncio
 import time
 import datetime
@@ -32,6 +34,7 @@ from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import QDateTime, Qt, QTimer, QSize
 from PyQt6.QtWidgets import QStyleFactory, QStyle
 
+#experiment, still orking on this one
 class StatusMediaListener:
     def __init__(self, name, cast):
         self.name = name
@@ -66,23 +69,26 @@ class Window(QWidget):
 
 
         self.connect_to_stereo()
+        #experiment
         #listenerMedia = StatusMediaListener(self.cast.name, self.cast)
         #self.mc.register_status_listener(listenerMedia)
-        self.UiComponents()
         
+        self.UiComponents()
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_player)
-        self.timer.start(5000)
+        self.timer.start(5000) #5 seconds is the optimal time, less than that and the program crashes eventually
 
     def connect_to_stereo(self):
-        self.chromecasts, browser = pychromecast.get_listed_chromecasts(friendly_names=["El Altavoz de Susan"])
+        self.chromecasts, browser = pychromecast.get_listed_chromecasts(friendly_names=[""]) #add your google enabled speaker here
         print(pychromecast.get_listed_chromecasts())
         self.cast = self.chromecasts[0]
         self.cast.wait()
         print(self.cast.name)        
         self.mc = self.cast.media_controller
         self.mc.block_until_active()
-        self.d = denonavr.DenonAVR("192.168.86.151")
+        
+        #only if you have a denon avr stereo
+        self.d = denonavr.DenonAVR("") #enter your stereo IP adress here
         self.d.setup()
         self.d.update()
         print(self.d.state)
@@ -92,6 +98,8 @@ class Window(QWidget):
         self.artist , self.name_song = self.mc.status.artist, self.mc.status.title
         self.quality = self.mc.status.media_custom_data['playingQuality']
         self.musi_dict.update({'artista': self.artist, 'titulo': self.name_song, 'calidad': self.quality})
+        
+        #change to whatever icons you'd like
         pixmapi = QStyle.StandardPixmap.SP_MediaVolumeMuted
         icon_mute = self.style().standardIcon(pixmapi)
         pixmapi = QStyle.StandardPixmap.SP_MediaSkipBackward
@@ -100,7 +108,7 @@ class Window(QWidget):
         icon_skip_f = self.style().standardIcon(pixmapi)
         pixmapi = QStyle.StandardPixmap.SP_BrowserReload
         icon_update = self.style().standardIcon(pixmapi)
-        icon_play_pause = 'p_p.png'
+        icon_play_pause = 'p_p.png' #you'll have to download this one (and the 'on-off' too
 
 
         self.player_keys = {'Previous': [self.mc.rewind, icon_skip_b], 'Play/Pause':  [self.play_pause, icon_play_pause],'Next': [self.mc.skip, icon_skip_f], 'Mute': [self.mute, icon_mute], 'On/OFF': [self.on_off, 'on_off.png'], 'Update': [self.update_player, icon_update]}
@@ -113,9 +121,9 @@ class Window(QWidget):
         pregunta = self.cast.status.volume_muted
         if pregunta is False:
             self.cast.set_volume_muted(True)
-            print('merde')
+            
         else:
-            print('cojones')
+            
             self.cast.set_volume_muted(False)
 
     def play_pause(self):
@@ -123,12 +131,12 @@ class Window(QWidget):
         print(type(pregunta))
 
         if pregunta is True:
-            print('polla')
+            
             self.mc.pause()
         else:
             self.mc.play()
-            print('puto')
-
+            
+#this does not work as well as I'd want
     def on_off(self):
         if self.d.state == 'off':
             self.d.power_on()
@@ -215,10 +223,10 @@ class Window(QWidget):
         self.dialogLayout.addLayout(self.infoLayout) 
         self.createProgressBar()
         self.dialogLayout.addWidget(self.progressBar)
+        
         self.remaining_time_label = QLabel('cuanto')
         self.total_time_label = QLabel('mucho')
         self.total_time_label.setAlignment(Qt.AlignmentFlag.AlignRight)
-
         self.info2Layout.addWidget(self.remaining_time_label)
         self.info2Layout.addWidget(self.total_time_label)
         self.dialogLayout.addLayout(self.info2Layout)
@@ -243,21 +251,6 @@ class Window(QWidget):
         self.portada.setPixmap(smaller_pixmap)
         self.portada.show()
         
-
-       
-
-
-        
-
-            
-
-
-        
-        
-
-
-        
-
 
 if __name__ == "__main__":
     app = QApplication([])
